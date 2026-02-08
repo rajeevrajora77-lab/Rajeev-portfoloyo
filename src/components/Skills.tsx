@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Cloud, Container, Brain,
   LineChart, Code, Layers, Shield, Workflow
@@ -110,15 +110,13 @@ const skillCategories = [
 
 export function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards((prev) => new Set([...prev, index]));
+            entry.target.classList.add('fade-in');
           }
         });
       },
@@ -132,26 +130,32 @@ export function Skills() {
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-20 px-4">
+    <section id="skills" ref={sectionRef} className="py-20 px-4 bg-muted/50">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-bold text-center mb-4">Technical Skills</h2>
         <p className="text-center text-muted-foreground mb-12">ATS-Optimized Expertise in AI/ML Engineering & MLOps</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skillCategories.map((category, index) => (
-            <div
-              key={index}
-              data-index={index}
-              className="skill-card"
-            >
-              <h3 className="text-xl font-semibold mb-4">{category.title}</h3>
-              <ul>
-                {category.skills.map((skill, i) => (
-                  <li key={i}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {skillCategories.map((category, index) => {
+            const IconComponent = category.icon;
+            return (
+              <div
+                key={index}
+                data-index={index}
+                className="skill-card p-6 rounded-lg border bg-card hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <IconComponent className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">{category.title}</h3>
+                </div>
+                <ul className="space-y-2">
+                  {category.skills.map((skill, i) => (
+                    <li key={i} className="text-sm text-muted-foreground">{skill}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Zap, SkipForward, Terminal, Activity, Cpu, Cloud, Database, Shield } from 'lucide-react';
+import { Zap, SkipForward, Activity, Cloud, Brain } from 'lucide-react';
 
 interface IntroProps {
   onEnter: () => void;
@@ -98,7 +98,7 @@ export function Intro({ onEnter }: IntroProps) {
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-hidden">
         {/* Terminal */}
-        <div className="terminal" ref={termRef}>
+        <div className="terminal font-mono text-sm" ref={termRef}>
           <div className="mb-2">rajora@aion:~$</div>
           {displayedLines.map((line, i) => (
             <div key={i}>{line || '\u00A0'}</div>
@@ -112,26 +112,32 @@ export function Intro({ onEnter }: IntroProps) {
         <div className="mt-8">
           <h3 className="text-lg font-semibold mb-4">System Integrity</h3>
           <div className="space-y-2">
-            <div><Cloud /> AWS • Terraform • K8s</div>
-            <div><Brain /> LLMs • RAG • Search</div>
-            <div><Activity /> Uptime: 99.5%–99.7%</div>
+            <div className="flex items-center gap-2">
+              <Cloud className="w-4 h-4" /> AWS • Terraform • K8s
+            </div>
+            <div className="flex items-center gap-2">
+              <Brain className="w-4 h-4" /> LLMs • RAG • Search
+            </div>
+            <div className="flex items-center gap-2">
+              <Activity className="w-4 h-4" /> Uptime: 99.5%–99.7%
+            </div>
           </div>
         </div>
 
         <div className="mt-8">
           <div className="mb-2">Deployment Readiness</div>
           <div className="w-full bg-secondary rounded-full h-2">
-            <div className="bg-primary h-2 rounded-full" style={{ width: `${progress}%` }}></div>
+            <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
           </div>
           <div className="text-sm text-right">{progress}%</div>
         </div>
 
         <div className="mt-8 flex gap-4">
-          <button onClick={onEnter} className="btn btn-primary">
-            <Zap className="mr-2" /> Enter Portfolio
+          <button onClick={onEnter} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90">
+            <Zap className="w-4 h-4" /> Enter Portfolio
           </button>
-          <button onClick={onEnter} className="btn btn-secondary">
-            <SkipForward className="mr-2" /> Skip Intro
+          <button onClick={onEnter} className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:opacity-90">
+            <SkipForward className="w-4 h-4" /> Skip Intro
           </button>
         </div>
       </div>

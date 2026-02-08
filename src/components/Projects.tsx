@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ExternalLink, Github, Layers, Search, Users,
-  TrendingUp, BarChart3, Activity, Database, Cpu, ArrowRight
+  Layers, Users,
+  TrendingUp, Activity, Database, Cpu
 } from 'lucide-react';
 import {
   Dialog,
@@ -57,15 +57,13 @@ const projects = [
 export function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
-  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards((prev) => new Set([...prev, index]));
+            entry.target.classList.add('fade-in');
           }
         });
       },
@@ -88,11 +86,10 @@ export function Projects() {
         <p className="text-center text-muted-foreground mb-12">Production-Grade AI Systems I've Built</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
               key={project.id}
-              data-index={index}
-              className="project-card"
+              className="project-card p-6 rounded-lg border bg-card hover:shadow-lg transition-all cursor-pointer"
               onClick={() => setSelectedProject(project)}
             >
               <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
@@ -100,7 +97,7 @@ export function Projects() {
               <p className="mb-4">{project.description}</p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map((tag, i) => (
-                  <span key={i} className="badge">{tag}</span>
+                  <span key={i} className="px-2 py-1 bg-primary/10 text-primary rounded text-xs">{tag}</span>
                 ))}
               </div>
               <div className="grid grid-cols-3 gap-4">
